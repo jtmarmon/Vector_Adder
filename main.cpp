@@ -7,8 +7,9 @@
 #define yMax 600
 #define xMid 400
 #define yMid 300
-#define vectorWidth 3
+#define vectorWidth 2
 #define vectorScaler 6
+#define vectorDisplacement 1
 typedef sf::Color COLOR;
 typedef sf::RectangleShape LINE;
 struct point
@@ -16,30 +17,34 @@ struct point
 	float x;
 	float y;
 };
-
+void loadMenu()
+{
+	std::cout << "bitchezZ" << std::endl;
+};
 int main()
 {
+	Vector::numVectors = 0;
 	Vector::degreeMode = true;
 	Vector BLANKVECTOR;
-	Vector a(22,12);
+	Vector a(22,45);
+	a.setLine(createLine(a), BLANKVECTOR);
 	Vector b(34, 60);
+	b.setLine(createLine(b,a),a);
 	Vector c = a+b;
 	c.setLine(createLine(c), BLANKVECTOR);
-	a.setLine(createLine(a), BLANKVECTOR);
-	b.setLine(createLine(b,a),a);
 
 
-	sf::Vector2i toggleLocation(50,50);
+	sf::Vector2i toggleLocation(200,50);
 	sf::RectangleShape toggle((sf::Vector2f)toggleLocation);
-	toggle.setFillColor(sf::Color::Cyan);
-	sf::RenderWindow window(sf::VideoMode(xMax, yMax), "SFML window");
+	toggle.setFillColor(sf::Color::Yellow);
+	sf::RenderWindow window(sf::VideoMode(xMax, yMax), "FUNSICZ");
 	sf::Font font;
 	if (!font.loadFromFile("tnr.ttf"))
 		return EXIT_FAILURE;
-	sf::Text text("Welcome to \"Head Douche-Dickwad's\" vector addition program", font, 30);
 	sf::Mouse mouse;
 	// Start the `main loop
 	bool toggleComponents = false;
+	int i=0;
 	while (window.isOpen())
 	{
 		// Process events
@@ -48,21 +53,26 @@ int main()
 		{
 			// Close window : exit
 			if (event.type == sf::Event::Closed)
-			window.close();
+				window.close();
+			if(event.type==event.MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left && V2i_inRange(sf::Mouse::getPosition(window), toggleLocation, 200, 50))
+			{
+				i++;
+				std::cout << "dicks  " << i <<std::endl;
+				if(toggleComponents)
+					toggleComponents = false;
+				else
+					toggleComponents = true;
+			}
+			if(event.type==event.KeyReleased && event.key.code == sf::Keyboard::Escape)
+				loadMenu();
 		}
 		// Clear screen
 		window.clear();
-		window.pollEvent(event);
-		if(event.type==event.MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left && V2i_inRange(sf::Mouse::getPosition(window), toggleLocation, 50, 50))
-		{
-			if(toggleComponents)
-				toggleComponents = false;
-			else
-				toggleComponents = true;
-		}
+		
+		
 		if(toggleComponents)
 		{
-			std::cout << "dicks"<<std::endl;
+			
 			window.draw(a.getCXL());
 			window.draw(a.getCYL());
 			window.draw(b.getCXL());

@@ -9,8 +9,9 @@ typedef sf::RectangleShape LINE;
 #define yMax 600
 #define xMid 400
 #define yMid 300
-#define vectorWidth 3
+#define vectorWidth 2
 #define vectorScaler 6
+#define vectorDisplacement 1
 //*************SET/GET FUNCTIONS**************
 float Vector::getMagnitude()
 {
@@ -30,15 +31,17 @@ void Vector::setLine(LINE lineIn, Vector LV /*last vector */)
 
 
 	cxl = LINE(sf::Vector2f(vectorWidth, vectorScaler*this->getCX()));
-	cxl.setPosition(xMid+vectorScaler*LV.getCX(), yMid-vectorScaler*LV.getCY());
+	cxl.setPosition(xMid+vectorScaler*LV.getCX(), yMid-vectorScaler*LV.getCY()+(vectorDisplacement*numVectors));
 	cxl.rotate(270);
 	cxl.setFillColor(sf::Color::Red);
 
 	
 	cyl = LINE(sf::Vector2f(vectorWidth, vectorScaler*this->getCY()));
-	cyl.setPosition(xMid+vectorScaler*(this->getCX()+LV.getCX()), yMid-vectorScaler*LV.getCY());
+	cyl.setPosition(xMid+vectorScaler*(this->getCX()+LV.getCX()) + (vectorDisplacement*numVectors), yMid-vectorScaler*LV.getCY());
 	cyl.rotate(180);
 	cyl.setFillColor(sf::Color::Red);
+
+	std::cout << numVectors << std::endl;
 };
 void Vector::setLineColor(COLOR cIn)
 {
@@ -102,10 +105,12 @@ LINE Vector::getCYL()
 };
 //*************MISCELLANEOUS************
 bool Vector::degreeMode;
+int Vector::numVectors;
 //*************CONSTRUCTORS***************
 Vector::Vector():magnitude(0),angle(0),Cx(0),Cy(0){ };
 Vector::Vector(float m,float a):magnitude(m),angle(a)
 {
+	numVectors++;
 	//initialize components
 	if(Vector::degreeMode)
 	{

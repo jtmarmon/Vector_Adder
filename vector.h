@@ -2,6 +2,7 @@
 #include <SFML\Graphics.hpp>
 typedef sf::RectangleShape LINE;
 typedef sf::Color COLOR;
+
 class Vector
 {
 
@@ -14,6 +15,7 @@ class Vector
 	LINE cyl;
 public:
 	static bool degreeMode; 
+	static int numVectors;
 //	static void setDegreeMode(bool);
 	//static bool getDegreeMode();
 	Vector();
